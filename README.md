@@ -1,6 +1,6 @@
 # EIP_Session3
 
-## Final Validation accuracy for Base Network
+## Final Validation accuracy for Base Network (81.66)
 Accuracy on test data is: 81.66 with max of 82.73 at 47th Epoch
 
 ## Model definition
