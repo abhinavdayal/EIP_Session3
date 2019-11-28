@@ -27,7 +27,7 @@ model.add(Dropout(0.07))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-# rin=7, nin = 32x32, cin=48, jin=1, k=2, p=1, s=2, jout=2, rout=8, nout=16x16, cout=48
+# rin=7, nin = 32x32, cin=48, jin=1, k=2, p=0, s=2, jout=2, rout=8, nout=16x16, cout=48
 model.add(MaxPooling2D())
 
 # rin=8, nin = 16x16, cin= 48, jin=2, k=3, p=1, s=1, jout=2, rout=12, nout=16x16, cout=64
@@ -42,7 +42,7 @@ model.add(Dropout(0.07))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-# rin=16, nin = 16x16, cin=96, jin=2, k=2, p=1, s=2, jout=4, rout=18, nout=8x8, cout=96
+# rin=16, nin = 16x16, cin=96, jin=2, k=2, p=0, s=2, jout=4, rout=18, nout=8x8, cout=96
 model.add(MaxPooling2D())
 
 # rin=18, nin = 8x8, cin= 96, jin=4, k=3, p=0, s=1, jout=4, rout=26, nout=6x6, cout=192
