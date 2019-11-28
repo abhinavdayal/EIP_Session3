@@ -65,7 +65,7 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 model.summary()
 ```
 
-## 50 epocs logs
+## 50 epocs logs (max validation accuracy 83.10 in 44th Epoch)
 ```
 Epoch 00001: LearningRateScheduler reducing learning rate to 0.01.
 Epoch 1/50
