@@ -45,13 +45,13 @@ model.add(Activation('relu'))
 # rin=16, nin = 16x16, cin=96, jin=2, k=2, p=1, s=2, jout=4, rout=18, nout=8x8, cout=96
 model.add(MaxPooling2D())
 
-# rin=18, nin = 8x8, cin= 96, jin=4, k=3, p=1, s=1, jout=4, rout=26, nout=6x6, cout=192
+# rin=18, nin = 8x8, cin= 96, jin=4, k=3, p=0, s=1, jout=4, rout=26, nout=6x6, cout=192
 model.add(SeparableConv2D(filters=192, kernel_size=(3, 3), padding='valid', depth_multiplier=1, use_bias=False))
 model.add(Dropout(0.07))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-# rin=26, nin = 6x6, cin= 192, jin=4, k=3, p=1, s=1, jout=4, rout=34, nout=4x4, cout=10 Cfar_10 has 10 classes
+# rin=26, nin = 6x6, cin= 192, jin=4, k=3, p=0, s=1, jout=4, rout=34, nout=4x4, cout=10 Cfar_10 has 10 classes
 model.add(SeparableConv2D(filters=num_classes, kernel_size=(3, 3), padding='valid', depth_multiplier=1, use_bias=False))
 # not adding any activation or batch normalization after the last convolution layer
 
@@ -268,3 +268,8 @@ Epoch 50/50
 195/195 [==============================] - 75s 385ms/step - loss: 0.4385 - accuracy: 0.8476 - val_loss: 0.5463 - val_accuracy: 0.8225
 Model took 3773.89 seconds to train
 ```
+
+# Strategy
+As required I replaced all conv with depth separable ones. I started with a simple model with 30K parameters ad the accuracy did not exceed 74%. I tried with Image augmentation, normalization, Batch normalization and dropouts and even tweaking the learning rate. Then I added more channels increasing number of parameters to 80K. Observed that the training and validation accuracy are steading increasing. So started with a harsher learning rate scheduling it to reduce gradually. That did the trick. I had to use different test accuracy function as I am now normalizing the image so had to normalize the test data with training mean and variance. I also switched to tensorflow 2.0
+
+With this success I tried augmenting the data to give as input more images as in the input data , currently double the quantity using augmentation. Also lowered the decay of learning rate as in earlier experiment the accuracy was still improving till the end. But all this made the training time to increase. It took more than one hour to train.
