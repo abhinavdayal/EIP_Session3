@@ -349,7 +349,7 @@ With this success I tried augmenting the data to give as input more images as in
 # Successful Experiemnts
 
 ## Success01 - LR Sched, IN, BN, Dropouts, Augmentation 63K Params
-That is what I submitted
+That is what I submitted. In fact that is the best I got with Image NOrmalization in place. Have to understand why accuracy reduces with image normalization. Is it because we apply train data's mean/variance on test data.?
 
 ## Success02 - LR Sched, IN, BN, Dropouts, Augmentation to give double data; 63K Params
 In Success02.ipynb I tried to send double the number of input by augmentation. It did help a bit in the sense that the model trained quicker in less epochs. But did not improve accuracy too much. Didn't get time but can experient with ReduceLROnPlateau i.e. start with a good enouh learning rate and rather than updaing learning rate every epoch reuce it by a facttor when the metric say val_loss stops improving. Did try without augmentation etc. but did not get past 79% in the few attempts. Stayed away from dense layers completely.
