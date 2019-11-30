@@ -375,7 +375,7 @@ Reduced dropouts and added augmentation **84.42% Accuracy*
 ## Success 09 - 76K parameters and no Image Normalization and Max pooling
 **85.54% accuracy**
 
-# Best 85.6% accuracy model ( Auccess 09 Done later after deadline. Sorry didnt get time before!)
+# Best 85.6% accuracy model ( Success 09 Done later after deadline. Sorry didnt get time before!)
 
 ```
 # Define the model, Since image size is already small we wont use stride > 1.
