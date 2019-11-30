@@ -372,8 +372,10 @@ Reduced dropouts and added augmentation **84.42% Accuracy*
 ## Success 08 - 63K parameters all LRS, DO, IN, BN
 **81.2%** Accuracy
 
+## Success 09 - 76K parameters and no Image Normalization and Max pooling
+**85.54% accuracy**
 
-# Best 85.6% accuracy model (Done later after deadline. Sorry didnt get time before!)
+# Best 85.6% accuracy model ( Auccess 09 Done later after deadline. Sorry didnt get time before!)
 
 ```
 # Define the model, Since image size is already small we wont use stride > 1.
@@ -398,54 +400,51 @@ model.add(Dropout(0.05))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-# rin=5, nin = 32x32, cin=32, jin=1, k=3, p=1, s=1, jout=1, rout=9, nout=32x32, cout=48
+# rin=7, nin = 32x32, cin=32, jin=1, k=3, p=1, s=1, jout=1, rout=9, nout=32x32, cout=48
 model.add(SeparableConv2D(filters=48, kernel_size=(3, 3), padding='same', depth_multiplier=1, use_bias=False))
 model.add(Dropout(0.05))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
 
-# rin=8, nin = 32x32, cin= 48, jin=1, k=3, p=1, s=1, jout=1, rout=11, nout=32x32, cout=64
+# rin=9, nin = 32x32, cin= 48, jin=1, k=3, p=1, s=1, jout=1, rout=11, nout=32x32, cout=64
 model.add(SeparableConv2D(filters=64, kernel_size=(3, 3), padding='same', depth_multiplier=1, use_bias=False))
 model.add(Dropout(0.05))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-# rin=8, nin = 32x32, cin= 64, jin=1, k=3, p=1, s=1, jout=1, rout=13, nout=16x16, cout=128
-model.add(SeparableConv2D(filters=128, kernel_size=(3, 3), padding='same', depth_multiplier=1, use_bias=False))
-model.add(Dropout(0.05))
+# rin=11, nin = 32x32, cin= 64, jin=1, k=3, p=1, s=2, jout=2, rout=13, nout=16x16, cout=128
+model.add(SeparableConv2D(filters=128, kernel_size=(3, 3), strides=(2,2), padding='same', depth_multiplier=1, use_bias=False))
+model.add(Dropout(0.1))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-# rin=16, nin = 32x32, cin=128, jin=1, k=2, p=1, s=2, jout=2, rout=14, nout=8x8, cout=128
-model.add(MaxPooling2D())
-
-# rin=12, nin = 16x16, cin= 128, jin=2, k=3, p=1, s=1, jout=2, rout=18, nout=16x16, cout=64
+# rin=13, nin = 16x16, cin= 96, jin=2, k=3, p=1, s=1, jout=2, rout=17, nout=16x16, cout=64
 model.add(SeparableConv2D(filters=64, kernel_size=(3, 3), padding='same', depth_multiplier=1, use_bias=False))
 model.add(Dropout(0.05))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-# rin=12, nin = 8x8, cin= 64, jin=2, k=3, p=1, s=1, jout=2, rout=22, nout=8x8, cout=96
+# rin=12, nin = 8x8, cin= 64, jin=2, k=3, p=1, s=1, jout=2, rout=21, nout=8x8, cout=96
 model.add(SeparableConv2D(filters=96, kernel_size=(3, 3), padding='same', depth_multiplier=1, use_bias=False))
 model.add(Dropout(0.05))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-# rin=18, nin = 8x8, cin= 96, jin=2, k=3, p=1, s=1, jout=2, rout=26, nout=6x6, cout=128
+# rin=18, nin = 8x8, cin= 96, jin=4, k=3, p=1, s=1, jout=4, rout=25, nout=6x6, cout=128
 model.add(SeparableConv2D(filters=128, kernel_size=(3, 3), padding='valid', depth_multiplier=1, use_bias=False))
 model.add(Dropout(0.05))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-# rin=18, nin = 6x6, cin= 128, jin=2, k=3, p=1, s=1, jout=2, rout=30, nout=4x4, cout=192
+# rin=18, nin = 6x6, cin= 128, jin=4, k=3, p=1, s=1, jout=4, rout=29, nout=4x4, cout=192
 model.add(SeparableConv2D(filters=192, kernel_size=(3, 3), padding='valid', depth_multiplier=1, use_bias=False))
 model.add(Dropout(0.05))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
 
-# rin=26, nin = 4x4, cin= 192, jin=2, k=3, p=1, s=1, jout=2, rout=34, nout=2x2, cout=10 Cfar_10 has 10 classes
+# rin=26, nin = 4x4, cin= 192, jin=4, k=3, p=1, s=1, jout=4, rout=33, nout=2x2, cout=10 Cfar_10 has 10 classes
 model.add(SeparableConv2D(filters=num_classes, kernel_size=(3, 3), padding='valid', depth_multiplier=1, use_bias=False))
 model.add(Dropout(0.05))
 model.add(BatchNormalization())
@@ -462,105 +461,103 @@ model.summary()
 ```
 
 ```
-Model: "sequential_1"
+Model: "sequential_3"
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
-separable_conv2d_11 (Separab (None, 32, 32, 16)        75        
+separable_conv2d_33 (Separab (None, 32, 32, 16)        75        
 _________________________________________________________________
-dropout_11 (Dropout)         (None, 32, 32, 16)        0         
+dropout_33 (Dropout)         (None, 32, 32, 16)        0         
 _________________________________________________________________
-batch_normalization_11 (Batc (None, 32, 32, 16)        64        
+batch_normalization_33 (Batc (None, 32, 32, 16)        64        
 _________________________________________________________________
-activation_12 (Activation)   (None, 32, 32, 16)        0         
+activation_36 (Activation)   (None, 32, 32, 16)        0         
 _________________________________________________________________
-separable_conv2d_12 (Separab (None, 32, 32, 16)        400       
+separable_conv2d_34 (Separab (None, 32, 32, 16)        400       
 _________________________________________________________________
-dropout_12 (Dropout)         (None, 32, 32, 16)        0         
+dropout_34 (Dropout)         (None, 32, 32, 16)        0         
 _________________________________________________________________
-batch_normalization_12 (Batc (None, 32, 32, 16)        64        
+batch_normalization_34 (Batc (None, 32, 32, 16)        64        
 _________________________________________________________________
-activation_13 (Activation)   (None, 32, 32, 16)        0         
+activation_37 (Activation)   (None, 32, 32, 16)        0         
 _________________________________________________________________
-separable_conv2d_13 (Separab (None, 32, 32, 32)        656       
+separable_conv2d_35 (Separab (None, 32, 32, 32)        656       
 _________________________________________________________________
-dropout_13 (Dropout)         (None, 32, 32, 32)        0         
+dropout_35 (Dropout)         (None, 32, 32, 32)        0         
 _________________________________________________________________
-batch_normalization_13 (Batc (None, 32, 32, 32)        128       
+batch_normalization_35 (Batc (None, 32, 32, 32)        128       
 _________________________________________________________________
-activation_14 (Activation)   (None, 32, 32, 32)        0         
+activation_38 (Activation)   (None, 32, 32, 32)        0         
 _________________________________________________________________
-separable_conv2d_14 (Separab (None, 32, 32, 48)        1824      
+separable_conv2d_36 (Separab (None, 32, 32, 48)        1824      
 _________________________________________________________________
-dropout_14 (Dropout)         (None, 32, 32, 48)        0         
+dropout_36 (Dropout)         (None, 32, 32, 48)        0         
 _________________________________________________________________
-batch_normalization_14 (Batc (None, 32, 32, 48)        192       
+batch_normalization_36 (Batc (None, 32, 32, 48)        192       
 _________________________________________________________________
-activation_15 (Activation)   (None, 32, 32, 48)        0         
+activation_39 (Activation)   (None, 32, 32, 48)        0         
 _________________________________________________________________
-separable_conv2d_15 (Separab (None, 32, 32, 64)        3504      
+separable_conv2d_37 (Separab (None, 32, 32, 64)        3504      
 _________________________________________________________________
-dropout_15 (Dropout)         (None, 32, 32, 64)        0         
+dropout_37 (Dropout)         (None, 32, 32, 64)        0         
 _________________________________________________________________
-batch_normalization_15 (Batc (None, 32, 32, 64)        256       
+batch_normalization_37 (Batc (None, 32, 32, 64)        256       
 _________________________________________________________________
-activation_16 (Activation)   (None, 32, 32, 64)        0         
+activation_40 (Activation)   (None, 32, 32, 64)        0         
 _________________________________________________________________
-separable_conv2d_16 (Separab (None, 32, 32, 128)       8768      
+separable_conv2d_38 (Separab (None, 16, 16, 128)       8768      
 _________________________________________________________________
-dropout_16 (Dropout)         (None, 32, 32, 128)       0         
+dropout_38 (Dropout)         (None, 16, 16, 128)       0         
 _________________________________________________________________
-batch_normalization_16 (Batc (None, 32, 32, 128)       512       
+batch_normalization_38 (Batc (None, 16, 16, 128)       512       
 _________________________________________________________________
-activation_17 (Activation)   (None, 32, 32, 128)       0         
+activation_41 (Activation)   (None, 16, 16, 128)       0         
 _________________________________________________________________
-max_pooling2d_1 (MaxPooling2 (None, 16, 16, 128)       0         
+separable_conv2d_39 (Separab (None, 16, 16, 64)        9344      
 _________________________________________________________________
-separable_conv2d_17 (Separab (None, 16, 16, 64)        9344      
+dropout_39 (Dropout)         (None, 16, 16, 64)        0         
 _________________________________________________________________
-dropout_17 (Dropout)         (None, 16, 16, 64)        0         
+batch_normalization_39 (Batc (None, 16, 16, 64)        256       
 _________________________________________________________________
-batch_normalization_17 (Batc (None, 16, 16, 64)        256       
+activation_42 (Activation)   (None, 16, 16, 64)        0         
 _________________________________________________________________
-activation_18 (Activation)   (None, 16, 16, 64)        0         
+separable_conv2d_40 (Separab (None, 16, 16, 96)        6720      
 _________________________________________________________________
-separable_conv2d_18 (Separab (None, 16, 16, 96)        6720      
+dropout_40 (Dropout)         (None, 16, 16, 96)        0         
 _________________________________________________________________
-dropout_18 (Dropout)         (None, 16, 16, 96)        0         
+batch_normalization_40 (Batc (None, 16, 16, 96)        384       
 _________________________________________________________________
-batch_normalization_18 (Batc (None, 16, 16, 96)        384       
+activation_43 (Activation)   (None, 16, 16, 96)        0         
 _________________________________________________________________
-activation_19 (Activation)   (None, 16, 16, 96)        0         
+separable_conv2d_41 (Separab (None, 14, 14, 128)       13152     
 _________________________________________________________________
-separable_conv2d_19 (Separab (None, 14, 14, 128)       13152     
+dropout_41 (Dropout)         (None, 14, 14, 128)       0         
 _________________________________________________________________
-dropout_19 (Dropout)         (None, 14, 14, 128)       0         
+batch_normalization_41 (Batc (None, 14, 14, 128)       512       
 _________________________________________________________________
-batch_normalization_19 (Batc (None, 14, 14, 128)       512       
+activation_44 (Activation)   (None, 14, 14, 128)       0         
 _________________________________________________________________
-activation_20 (Activation)   (None, 14, 14, 128)       0         
+separable_conv2d_42 (Separab (None, 12, 12, 192)       25728     
 _________________________________________________________________
-separable_conv2d_20 (Separab (None, 12, 12, 192)       25728     
+dropout_42 (Dropout)         (None, 12, 12, 192)       0         
 _________________________________________________________________
-dropout_20 (Dropout)         (None, 12, 12, 192)       0         
+batch_normalization_42 (Batc (None, 12, 12, 192)       768       
 _________________________________________________________________
-batch_normalization_20 (Batc (None, 12, 12, 192)       768       
+activation_45 (Activation)   (None, 12, 12, 192)       0         
 _________________________________________________________________
-activation_21 (Activation)   (None, 12, 12, 192)       0         
+separable_conv2d_43 (Separab (None, 10, 10, 10)        3648      
 _________________________________________________________________
-separable_conv2d_21 (Separab (None, 10, 10, 10)        3648      
+dropout_43 (Dropout)         (None, 10, 10, 10)        0         
 _________________________________________________________________
-dropout_21 (Dropout)         (None, 10, 10, 10)        0         
+batch_normalization_43 (Batc (None, 10, 10, 10)        40        
 _________________________________________________________________
-batch_normalization_21 (Batc (None, 10, 10, 10)        40        
+activation_46 (Activation)   (None, 10, 10, 10)        0         
 _________________________________________________________________
-activation_22 (Activation)   (None, 10, 10, 10)        0         
+global_average_pooling2d_3 ( (None, 10)                0         
 _________________________________________________________________
-global_average_pooling2d_1 ( (None, 10)                0         
+flatten_3 (Flatten)          (None, 10)                0         
 _________________________________________________________________
-flatten_1 (Flatten)          (None, 10)                0         
-_________________________________________________________________
-activation_23 (Activation)   (None, 10)                0         
+activation_47 (Activation)   (None, 10)                0         
 =================================================================
 Total params: 76,995
 Trainable params: 75,407
@@ -570,204 +567,205 @@ _________________________________________________________________
 
 ## Result
 ```
+
 Epoch 00001: LearningRateScheduler reducing learning rate to 0.01.
 Epoch 1/50
-390/390 [==============================] - 105s 270ms/step - loss: 1.7028 - accuracy: 0.3842 - val_loss: 2.3498 - val_accuracy: 0.3085
+390/390 [==============================] - 99s 253ms/step - loss: 1.6833 - accuracy: 0.3907 - val_loss: 6.3635 - val_accuracy: 0.2233
 
-Epoch 00002: LearningRateScheduler reducing learning rate to 0.0075815011.
+Epoch 00002: LearningRateScheduler reducing learning rate to 0.008071025.
 Epoch 2/50
-390/390 [==============================] - 101s 258ms/step - loss: 1.2908 - accuracy: 0.5474 - val_loss: 2.8046 - val_accuracy: 0.3560
+390/390 [==============================] - 98s 252ms/step - loss: 1.3361 - accuracy: 0.5290 - val_loss: 3.1254 - val_accuracy: 0.3961
 
-Epoch 00003: LearningRateScheduler reducing learning rate to 0.0061050061.
+Epoch 00003: LearningRateScheduler reducing learning rate to 0.0067658999.
 Epoch 3/50
-390/390 [==============================] - 102s 262ms/step - loss: 1.0918 - accuracy: 0.6213 - val_loss: 1.6133 - val_accuracy: 0.5440
+390/390 [==============================] - 100s 256ms/step - loss: 1.1545 - accuracy: 0.5991 - val_loss: 1.7183 - val_accuracy: 0.5101
 
-Epoch 00004: LearningRateScheduler reducing learning rate to 0.005109862.
+Epoch 00004: LearningRateScheduler reducing learning rate to 0.0058241118.
 Epoch 4/50
-390/390 [==============================] - 103s 264ms/step - loss: 0.9712 - accuracy: 0.6657 - val_loss: 1.3412 - val_accuracy: 0.6158
+390/390 [==============================] - 98s 251ms/step - loss: 1.0396 - accuracy: 0.6381 - val_loss: 1.3908 - val_accuracy: 0.6052
 
-Epoch 00005: LearningRateScheduler reducing learning rate to 0.0043936731.
+Epoch 00005: LearningRateScheduler reducing learning rate to 0.0051124744.
 Epoch 5/50
-390/390 [==============================] - 102s 262ms/step - loss: 0.8942 - accuracy: 0.6928 - val_loss: 0.9012 - val_accuracy: 0.6980
+390/390 [==============================] - 99s 255ms/step - loss: 0.9565 - accuracy: 0.6692 - val_loss: 1.0198 - val_accuracy: 0.6686
 
-Epoch 00006: LearningRateScheduler reducing learning rate to 0.0038535645.
+Epoch 00006: LearningRateScheduler reducing learning rate to 0.0045558087.
 Epoch 6/50
-390/390 [==============================] - 101s 259ms/step - loss: 0.8341 - accuracy: 0.7154 - val_loss: 1.1658 - val_accuracy: 0.6556
+390/390 [==============================] - 100s 257ms/step - loss: 0.8957 - accuracy: 0.6919 - val_loss: 1.2684 - val_accuracy: 0.6427
 
-Epoch 00007: LearningRateScheduler reducing learning rate to 0.003431709.
+Epoch 00007: LearningRateScheduler reducing learning rate to 0.0041084634.
 Epoch 7/50
-390/390 [==============================] - 102s 262ms/step - loss: 0.7898 - accuracy: 0.7306 - val_loss: 1.0214 - val_accuracy: 0.6967
+390/390 [==============================] - 99s 254ms/step - loss: 0.8402 - accuracy: 0.7104 - val_loss: 0.9879 - val_accuracy: 0.6940
 
-Epoch 00008: LearningRateScheduler reducing learning rate to 0.0030931024.
+Epoch 00008: LearningRateScheduler reducing learning rate to 0.0037411149.
 Epoch 8/50
-390/390 [==============================] - 102s 261ms/step - loss: 0.7510 - accuracy: 0.7435 - val_loss: 0.7432 - val_accuracy: 0.7567
+390/390 [==============================] - 99s 254ms/step - loss: 0.8111 - accuracy: 0.7203 - val_loss: 0.8241 - val_accuracy: 0.7345
 
-Epoch 00009: LearningRateScheduler reducing learning rate to 0.0028153153.
+Epoch 00009: LearningRateScheduler reducing learning rate to 0.0034340659.
 Epoch 9/50
-390/390 [==============================] - 100s 257ms/step - loss: 0.7227 - accuracy: 0.7527 - val_loss: 0.6848 - val_accuracy: 0.7793
+390/390 [==============================] - 100s 257ms/step - loss: 0.7818 - accuracy: 0.7301 - val_loss: 0.8006 - val_accuracy: 0.7492
 
-Epoch 00010: LearningRateScheduler reducing learning rate to 0.0025833118.
+Epoch 00010: LearningRateScheduler reducing learning rate to 0.0031735957.
 Epoch 10/50
-390/390 [==============================] - 102s 262ms/step - loss: 0.6911 - accuracy: 0.7636 - val_loss: 1.3596 - val_accuracy: 0.6748
+390/390 [==============================] - 100s 255ms/step - loss: 0.7521 - accuracy: 0.7412 - val_loss: 0.9741 - val_accuracy: 0.7138
 
-Epoch 00011: LearningRateScheduler reducing learning rate to 0.0023866348.
+Epoch 00011: LearningRateScheduler reducing learning rate to 0.0029498525.
 Epoch 11/50
-390/390 [==============================] - 100s 256ms/step - loss: 0.6746 - accuracy: 0.7696 - val_loss: 0.7574 - val_accuracy: 0.7613
+390/390 [==============================] - 99s 254ms/step - loss: 0.7341 - accuracy: 0.7481 - val_loss: 0.9388 - val_accuracy: 0.7082
 
-Epoch 00012: LearningRateScheduler reducing learning rate to 0.0022177866.
+Epoch 00012: LearningRateScheduler reducing learning rate to 0.00275558.
 Epoch 12/50
-390/390 [==============================] - 99s 253ms/step - loss: 0.6570 - accuracy: 0.7748 - val_loss: 0.6289 - val_accuracy: 0.7976
+390/390 [==============================] - 99s 254ms/step - loss: 0.7176 - accuracy: 0.7535 - val_loss: 0.6720 - val_accuracy: 0.7869
 
-Epoch 00013: LearningRateScheduler reducing learning rate to 0.002071251.
+Epoch 00013: LearningRateScheduler reducing learning rate to 0.0025853154.
 Epoch 13/50
-390/390 [==============================] - 100s 257ms/step - loss: 0.6444 - accuracy: 0.7799 - val_loss: 0.6029 - val_accuracy: 0.7986
+390/390 [==============================] - 99s 253ms/step - loss: 0.6933 - accuracy: 0.7633 - val_loss: 0.7392 - val_accuracy: 0.7714
 
-Epoch 00014: LearningRateScheduler reducing learning rate to 0.0019428793.
+Epoch 00014: LearningRateScheduler reducing learning rate to 0.0024348673.
 Epoch 14/50
-390/390 [==============================] - 100s 256ms/step - loss: 0.6251 - accuracy: 0.7871 - val_loss: 0.6486 - val_accuracy: 0.7892
+390/390 [==============================] - 98s 251ms/step - loss: 0.6776 - accuracy: 0.7639 - val_loss: 0.6321 - val_accuracy: 0.7964
 
-Epoch 00015: LearningRateScheduler reducing learning rate to 0.0018294914.
+Epoch 00015: LearningRateScheduler reducing learning rate to 0.0023009664.
 Epoch 15/50
-390/390 [==============================] - 99s 253ms/step - loss: 0.6178 - accuracy: 0.7897 - val_loss: 0.7723 - val_accuracy: 0.7634
+390/390 [==============================] - 99s 255ms/step - loss: 0.6723 - accuracy: 0.7715 - val_loss: 0.6663 - val_accuracy: 0.7851
 
-Epoch 00016: LearningRateScheduler reducing learning rate to 0.0017286085.
+Epoch 00016: LearningRateScheduler reducing learning rate to 0.0021810251.
 Epoch 16/50
-390/390 [==============================] - 101s 259ms/step - loss: 0.6026 - accuracy: 0.7929 - val_loss: 0.7266 - val_accuracy: 0.7706
+390/390 [==============================] - 99s 254ms/step - loss: 0.6536 - accuracy: 0.7757 - val_loss: 0.6920 - val_accuracy: 0.7789
 
-Epoch 00017: LearningRateScheduler reducing learning rate to 0.00163827.
+Epoch 00017: LearningRateScheduler reducing learning rate to 0.0020729685.
 Epoch 17/50
-390/390 [==============================] - 101s 258ms/step - loss: 0.5893 - accuracy: 0.7990 - val_loss: 0.6214 - val_accuracy: 0.8029
+390/390 [==============================] - 97s 250ms/step - loss: 0.6460 - accuracy: 0.7788 - val_loss: 0.5904 - val_accuracy: 0.8004
 
-Epoch 00018: LearningRateScheduler reducing learning rate to 0.0015569049.
+Epoch 00018: LearningRateScheduler reducing learning rate to 0.0019751136.
 Epoch 18/50
-390/390 [==============================] - 99s 254ms/step - loss: 0.5810 - accuracy: 0.8013 - val_loss: 0.5198 - val_accuracy: 0.8270
+390/390 [==============================] - 99s 254ms/step - loss: 0.6326 - accuracy: 0.7849 - val_loss: 0.8594 - val_accuracy: 0.7290
 
-Epoch 00019: LearningRateScheduler reducing learning rate to 0.0014832394.
+Epoch 00019: LearningRateScheduler reducing learning rate to 0.0018860807.
 Epoch 19/50
-390/390 [==============================] - 101s 259ms/step - loss: 0.5685 - accuracy: 0.8054 - val_loss: 0.5997 - val_accuracy: 0.8071
+390/390 [==============================] - 98s 251ms/step - loss: 0.6246 - accuracy: 0.7851 - val_loss: 0.7021 - val_accuracy: 0.7813
 
-Epoch 00020: LearningRateScheduler reducing learning rate to 0.00141623.
+Epoch 00020: LearningRateScheduler reducing learning rate to 0.0018047284.
 Epoch 20/50
-390/390 [==============================] - 100s 257ms/step - loss: 0.5654 - accuracy: 0.8063 - val_loss: 0.5667 - val_accuracy: 0.8192
+390/390 [==============================] - 98s 250ms/step - loss: 0.6201 - accuracy: 0.7871 - val_loss: 0.6040 - val_accuracy: 0.8039
 
-Epoch 00021: LearningRateScheduler reducing learning rate to 0.0013550136.
+Epoch 00021: LearningRateScheduler reducing learning rate to 0.0017301038.
 Epoch 21/50
-390/390 [==============================] - 100s 256ms/step - loss: 0.5554 - accuracy: 0.8096 - val_loss: 0.6854 - val_accuracy: 0.7890
+390/390 [==============================] - 99s 253ms/step - loss: 0.6041 - accuracy: 0.7925 - val_loss: 0.4849 - val_accuracy: 0.8391
 
-Epoch 00022: LearningRateScheduler reducing learning rate to 0.00129887.
+Epoch 00022: LearningRateScheduler reducing learning rate to 0.0016614055.
 Epoch 22/50
-390/390 [==============================] - 102s 261ms/step - loss: 0.5527 - accuracy: 0.8106 - val_loss: 0.5801 - val_accuracy: 0.8158
+390/390 [==============================] - 99s 254ms/step - loss: 0.5978 - accuracy: 0.7968 - val_loss: 0.6087 - val_accuracy: 0.8089
 
-Epoch 00023: LearningRateScheduler reducing learning rate to 0.0012471938.
+Epoch 00023: LearningRateScheduler reducing learning rate to 0.0015979546.
 Epoch 23/50
-390/390 [==============================] - 101s 259ms/step - loss: 0.5443 - accuracy: 0.8135 - val_loss: 0.5468 - val_accuracy: 0.8235
+390/390 [==============================] - 98s 251ms/step - loss: 0.5924 - accuracy: 0.7969 - val_loss: 0.5533 - val_accuracy: 0.8186
 
-Epoch 00024: LearningRateScheduler reducing learning rate to 0.0011994722.
+Epoch 00024: LearningRateScheduler reducing learning rate to 0.0015391719.
 Epoch 24/50
-390/390 [==============================] - 100s 257ms/step - loss: 0.5341 - accuracy: 0.8160 - val_loss: 0.5042 - val_accuracy: 0.8294
+390/390 [==============================] - 98s 252ms/step - loss: 0.5823 - accuracy: 0.8006 - val_loss: 0.7180 - val_accuracy: 0.7817
 
-Epoch 00025: LearningRateScheduler reducing learning rate to 0.001155268.
+Epoch 00025: LearningRateScheduler reducing learning rate to 0.0014845606.
 Epoch 25/50
-390/390 [==============================] - 103s 265ms/step - loss: 0.5290 - accuracy: 0.8193 - val_loss: 0.5008 - val_accuracy: 0.8351
+390/390 [==============================] - 98s 251ms/step - loss: 0.5749 - accuracy: 0.8031 - val_loss: 0.5406 - val_accuracy: 0.8260
 
-Epoch 00026: LearningRateScheduler reducing learning rate to 0.0011142061.
+Epoch 00026: LearningRateScheduler reducing learning rate to 0.0014336918.
 Epoch 26/50
-390/390 [==============================] - 101s 259ms/step - loss: 0.5222 - accuracy: 0.8224 - val_loss: 0.6066 - val_accuracy: 0.8095
+390/390 [==============================] - 97s 249ms/step - loss: 0.5708 - accuracy: 0.8038 - val_loss: 0.5295 - val_accuracy: 0.8231
 
-Epoch 00027: LearningRateScheduler reducing learning rate to 0.001075963.
+Epoch 00027: LearningRateScheduler reducing learning rate to 0.0013861935.
 Epoch 27/50
-390/390 [==============================] - 100s 257ms/step - loss: 0.5200 - accuracy: 0.8219 - val_loss: 0.4690 - val_accuracy: 0.8394
+390/390 [==============================] - 98s 251ms/step - loss: 0.5630 - accuracy: 0.8067 - val_loss: 0.5303 - val_accuracy: 0.8275
 
-Epoch 00028: LearningRateScheduler reducing learning rate to 0.001040258.
+Epoch 00028: LearningRateScheduler reducing learning rate to 0.0013417416.
 Epoch 28/50
-390/390 [==============================] - 101s 258ms/step - loss: 0.5164 - accuracy: 0.8223 - val_loss: 0.4795 - val_accuracy: 0.8390
+390/390 [==============================] - 97s 248ms/step - loss: 0.5644 - accuracy: 0.8080 - val_loss: 0.5025 - val_accuracy: 0.8359
 
-Epoch 00029: LearningRateScheduler reducing learning rate to 0.0010068466.
+Epoch 00029: LearningRateScheduler reducing learning rate to 0.001300052.
 Epoch 29/50
-390/390 [==============================] - 101s 259ms/step - loss: 0.4992 - accuracy: 0.8302 - val_loss: 0.5103 - val_accuracy: 0.8327
+390/390 [==============================] - 96s 247ms/step - loss: 0.5525 - accuracy: 0.8104 - val_loss: 0.5867 - val_accuracy: 0.8138
 
-Epoch 00030: LearningRateScheduler reducing learning rate to 0.0009755146.
+Epoch 00030: LearningRateScheduler reducing learning rate to 0.001260875.
 Epoch 30/50
-390/390 [==============================] - 99s 255ms/step - loss: 0.5015 - accuracy: 0.8275 - val_loss: 0.6389 - val_accuracy: 0.8008
+390/390 [==============================] - 96s 246ms/step - loss: 0.5468 - accuracy: 0.8128 - val_loss: 0.5096 - val_accuracy: 0.8355
 
-Epoch 00031: LearningRateScheduler reducing learning rate to 0.0009460738.
+Epoch 00031: LearningRateScheduler reducing learning rate to 0.0012239902.
 Epoch 31/50
-390/390 [==============================] - 100s 256ms/step - loss: 0.4962 - accuracy: 0.8300 - val_loss: 0.5093 - val_accuracy: 0.8302
+390/390 [==============================] - 98s 252ms/step - loss: 0.5463 - accuracy: 0.8126 - val_loss: 0.5604 - val_accuracy: 0.8254
 
-Epoch 00032: LearningRateScheduler reducing learning rate to 0.000918358.
+Epoch 00032: LearningRateScheduler reducing learning rate to 0.001189202.
 Epoch 32/50
-390/390 [==============================] - 100s 257ms/step - loss: 0.4936 - accuracy: 0.8306 - val_loss: 0.5174 - val_accuracy: 0.8334
+390/390 [==============================] - 96s 247ms/step - loss: 0.5426 - accuracy: 0.8151 - val_loss: 0.5578 - val_accuracy: 0.8229
 
-Epoch 00033: LearningRateScheduler reducing learning rate to 0.0008922198.
+Epoch 00033: LearningRateScheduler reducing learning rate to 0.0011563367.
 Epoch 33/50
-390/390 [==============================] - 100s 256ms/step - loss: 0.4949 - accuracy: 0.8288 - val_loss: 0.5656 - val_accuracy: 0.8234
+390/390 [==============================] - 97s 248ms/step - loss: 0.5410 - accuracy: 0.8153 - val_loss: 0.5664 - val_accuracy: 0.8225
 
-Epoch 00034: LearningRateScheduler reducing learning rate to 0.0008675284.
+Epoch 00034: LearningRateScheduler reducing learning rate to 0.0011252391.
 Epoch 34/50
-390/390 [==============================] - 104s 266ms/step - loss: 0.4874 - accuracy: 0.8355 - val_loss: 0.5437 - val_accuracy: 0.8282
+390/390 [==============================] - 98s 251ms/step - loss: 0.5325 - accuracy: 0.8164 - val_loss: 0.5612 - val_accuracy: 0.8215
 
-Epoch 00035: LearningRateScheduler reducing learning rate to 0.0008441668.
+Epoch 00035: LearningRateScheduler reducing learning rate to 0.0010957703.
 Epoch 35/50
-390/390 [==============================] - 102s 260ms/step - loss: 0.4888 - accuracy: 0.8314 - val_loss: 0.6371 - val_accuracy: 0.8051
+390/390 [==============================] - 97s 248ms/step - loss: 0.5326 - accuracy: 0.8171 - val_loss: 0.5004 - val_accuracy: 0.8398
 
-Epoch 00036: LearningRateScheduler reducing learning rate to 0.0008220304.
+Epoch 00036: LearningRateScheduler reducing learning rate to 0.0010678057.
 Epoch 36/50
-390/390 [==============================] - 101s 259ms/step - loss: 0.4834 - accuracy: 0.8360 - val_loss: 0.5379 - val_accuracy: 0.8334
+390/390 [==============================] - 96s 247ms/step - loss: 0.5285 - accuracy: 0.8186 - val_loss: 0.5058 - val_accuracy: 0.8374
 
-Epoch 00037: LearningRateScheduler reducing learning rate to 0.0008010253.
+Epoch 00037: LearningRateScheduler reducing learning rate to 0.0010412328.
 Epoch 37/50
-390/390 [==============================] - 101s 258ms/step - loss: 0.4813 - accuracy: 0.8367 - val_loss: 0.4567 - val_accuracy: 0.8558
+390/390 [==============================] - 98s 251ms/step - loss: 0.5168 - accuracy: 0.8239 - val_loss: 0.4705 - val_accuracy: 0.8449
 
-Epoch 00038: LearningRateScheduler reducing learning rate to 0.0007810669.
+Epoch 00038: LearningRateScheduler reducing learning rate to 0.0010159504.
 Epoch 38/50
-390/390 [==============================] - 101s 258ms/step - loss: 0.4763 - accuracy: 0.8362 - val_loss: 0.4848 - val_accuracy: 0.8426
+390/390 [==============================] - 95s 245ms/step - loss: 0.5240 - accuracy: 0.8243 - val_loss: 0.4911 - val_accuracy: 0.8460
 
-Epoch 00039: LearningRateScheduler reducing learning rate to 0.000762079.
+Epoch 00039: LearningRateScheduler reducing learning rate to 0.0009918667.
 Epoch 39/50
-390/390 [==============================] - 100s 256ms/step - loss: 0.4739 - accuracy: 0.8376 - val_loss: 0.4919 - val_accuracy: 0.8427
+390/390 [==============================] - 95s 243ms/step - loss: 0.5180 - accuracy: 0.8227 - val_loss: 0.4664 - val_accuracy: 0.8480
 
-Epoch 00040: LearningRateScheduler reducing learning rate to 0.0007439923.
+Epoch 00040: LearningRateScheduler reducing learning rate to 0.0009688984.
 Epoch 40/50
-390/390 [==============================] - 100s 255ms/step - loss: 0.4700 - accuracy: 0.8401 - val_loss: 0.5044 - val_accuracy: 0.8382
+390/390 [==============================] - 97s 249ms/step - loss: 0.5148 - accuracy: 0.8234 - val_loss: 0.4805 - val_accuracy: 0.8444
 
-Epoch 00041: LearningRateScheduler reducing learning rate to 0.0007267442.
+Epoch 00041: LearningRateScheduler reducing learning rate to 0.0009469697.
 Epoch 41/50
-390/390 [==============================] - 100s 255ms/step - loss: 0.4663 - accuracy: 0.8390 - val_loss: 0.4970 - val_accuracy: 0.8407
+390/390 [==============================] - 96s 245ms/step - loss: 0.5129 - accuracy: 0.8232 - val_loss: 0.4459 - val_accuracy: 0.8554
 
-Epoch 00042: LearningRateScheduler reducing learning rate to 0.0007102777.
+Epoch 00042: LearningRateScheduler reducing learning rate to 0.0009260117.
 Epoch 42/50
-390/390 [==============================] - 98s 250ms/step - loss: 0.4663 - accuracy: 0.8394 - val_loss: 0.4815 - val_accuracy: 0.8464
+390/390 [==============================] - 94s 240ms/step - loss: 0.5041 - accuracy: 0.8279 - val_loss: 0.4517 - val_accuracy: 0.8518
 
-Epoch 00043: LearningRateScheduler reducing learning rate to 0.0006945409.
+Epoch 00043: LearningRateScheduler reducing learning rate to 0.0009059612.
 Epoch 43/50
-390/390 [==============================] - 97s 248ms/step - loss: 0.4596 - accuracy: 0.8428 - val_loss: 0.4651 - val_accuracy: 0.8497
+390/390 [==============================] - 96s 246ms/step - loss: 0.5052 - accuracy: 0.8276 - val_loss: 0.4425 - val_accuracy: 0.8533
 
-Epoch 00044: LearningRateScheduler reducing learning rate to 0.0006794863.
+Epoch 00044: LearningRateScheduler reducing learning rate to 0.0008867607.
 Epoch 44/50
-390/390 [==============================] - 100s 255ms/step - loss: 0.4594 - accuracy: 0.8421 - val_loss: 0.5308 - val_accuracy: 0.8353
+390/390 [==============================] - 94s 240ms/step - loss: 0.5045 - accuracy: 0.8265 - val_loss: 0.5206 - val_accuracy: 0.8324
 
-Epoch 00045: LearningRateScheduler reducing learning rate to 0.0006650705.
+Epoch 00045: LearningRateScheduler reducing learning rate to 0.0008683571.
 Epoch 45/50
-390/390 [==============================] - 99s 254ms/step - loss: 0.4625 - accuracy: 0.8410 - val_loss: 0.5686 - val_accuracy: 0.8236
+390/390 [==============================] - 94s 240ms/step - loss: 0.4969 - accuracy: 0.8300 - val_loss: 0.4777 - val_accuracy: 0.8465
 
-Epoch 00046: LearningRateScheduler reducing learning rate to 0.0006512537.
+Epoch 00046: LearningRateScheduler reducing learning rate to 0.0008507018.
 Epoch 46/50
-390/390 [==============================] - 99s 255ms/step - loss: 0.4571 - accuracy: 0.8424 - val_loss: 0.4676 - val_accuracy: 0.8513
+390/390 [==============================] - 97s 250ms/step - loss: 0.4961 - accuracy: 0.8312 - val_loss: 0.4732 - val_accuracy: 0.8423
 
-Epoch 00047: LearningRateScheduler reducing learning rate to 0.0006379992.
+Epoch 00047: LearningRateScheduler reducing learning rate to 0.0008337502.
 Epoch 47/50
-390/390 [==============================] - 100s 256ms/step - loss: 0.4561 - accuracy: 0.8427 - val_loss: 0.4883 - val_accuracy: 0.8480
+390/390 [==============================] - 96s 246ms/step - loss: 0.4948 - accuracy: 0.8280 - val_loss: 0.5545 - val_accuracy: 0.8216
 
-Epoch 00048: LearningRateScheduler reducing learning rate to 0.0006252736.
+Epoch 00048: LearningRateScheduler reducing learning rate to 0.000817461.
 Epoch 48/50
-390/390 [==============================] - 99s 253ms/step - loss: 0.4513 - accuracy: 0.8460 - val_loss: 0.5097 - val_accuracy: 0.8402
+390/390 [==============================] - 95s 243ms/step - loss: 0.4944 - accuracy: 0.8304 - val_loss: 0.5007 - val_accuracy: 0.8449
 
-Epoch 00049: LearningRateScheduler reducing learning rate to 0.0006130456.
+Epoch 00049: LearningRateScheduler reducing learning rate to 0.000801796.
 Epoch 49/50
-390/390 [==============================] - 99s 255ms/step - loss: 0.4445 - accuracy: 0.8486 - val_loss: 0.4983 - val_accuracy: 0.8435
+390/390 [==============================] - 97s 249ms/step - loss: 0.4931 - accuracy: 0.8289 - val_loss: 0.4898 - val_accuracy: 0.8438
 
-Epoch 00050: LearningRateScheduler reducing learning rate to 0.0006012868.
+Epoch 00050: LearningRateScheduler reducing learning rate to 0.0007867202.
 Epoch 50/50
-390/390 [==============================] - 101s 258ms/step - loss: 0.4484 - accuracy: 0.8452 - val_loss: 0.4772 - val_accuracy: 0.8463
-Model took 5026.58 seconds to train
+390/390 [==============================] - 96s 247ms/step - loss: 0.4867 - accuracy: 0.8335 - val_loss: 0.4538 - val_accuracy: 0.8528
+Model took 4874.43 seconds to train
 ```
